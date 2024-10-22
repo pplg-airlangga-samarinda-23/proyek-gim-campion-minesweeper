@@ -1,4 +1,3 @@
-/*----- constants -----*/
 var bombImage = '<img src="images/bomb.png">';
 var flagImage = '<img src="images/flag.png">';
 var wrongBombImage = '<img src="images/wrong-bomb.png">'
@@ -29,6 +28,7 @@ var hitBomb;
 var elapsedTime;
 var timerId;
 var winner;
+var timeend;
 
 /*----- cached element references -----*/
 var boardEl = document.getElementById('board');
@@ -59,7 +59,9 @@ boardEl.addEventListener('click', function(e) {
         e.target.style.backgroundColor = 'red';
       }
     }
-    winner = getWinner();
+    winner = getWinner();//<--ngecek untuk kondisi untuk membuat nilai variabel menjadi true
+    //yang ngejadiin nilai true setelah pemeriksaan kondisi winner
+
     render();
   }
 });
@@ -160,6 +162,9 @@ function getBombCount() {
   return count;
 };
 
+
+// CARA KERJA RNG NYA
+//ngerandom posisi bomb yang jumlah nya ditentukan doficult
 function addBombs() {
   var currentTotalBombs = sizeLookup[`${size}`].totalBombs;
   while (currentTotalBombs !== 0) {
@@ -173,6 +178,7 @@ function addBombs() {
   }
 };
 
+//yang memeriksa kondisi winner degan memberi nilai true
 function getWinner() {
   for (var row = 0; row<board.length; row++) {
     for (var col = 0; col<board[0].length; col++) {
@@ -181,6 +187,7 @@ function getWinner() {
     }
   } 
   return true;
+
 };
 
 function render() {
@@ -207,6 +214,9 @@ function render() {
       td.innerHTML = '';
     }
   });
+
+  //===========================kondisi win dan hit bomb===========================//
+
   if (hitBomb) {
     document.getElementById('reset').innerHTML = '<img src=images/dead-face.png>';
     runCodeForAllCells(function(cell) {
@@ -218,6 +228,9 @@ function render() {
   } else if (winner) {
     document.getElementById('reset').innerHTML = '<img src=images/cool-face.png>';
     clearInterval(timerId);
+    
+    localStorage.setItem('toptime',elapsedTime);//<-------
+    //ini buat nyimpen waktu terendah yang didapatkan dari kondisi menang
   }
 };
 
@@ -231,3 +244,5 @@ function runCodeForAllCells(cb) {
 
 init();
 render();
+
+console.log(localStorage.getItem('toptime').toString());//buat ouput nilai score ke console log

@@ -33,6 +33,9 @@ var timeend;
 /*----- cached element references -----*/
 var boardEl = document.getElementById('board');
 
+// var highScore local storage
+var highScore = localStorage.getItem('highscore') || Infinity;
+
 /*----- event listeners -----*/
 document.getElementById('size-btns').addEventListener('click', function(e) {
   size = parseInt(e.target.id.replace('size-', ''));
@@ -150,7 +153,12 @@ function init() {
   timerId = null;
   hitBomb = false;
   winner = false;
-};
+
+  // Update highscore display setiap kali game di-reset
+  document.getElementById('high-score').innerText = 
+      `Best Time: ${highScore === Infinity ? '---' : highScore.toString().padStart(3, '0')}`;
+}
+
 
 function getBombCount() {
   var count = 0;
@@ -192,47 +200,54 @@ function getWinner() {
 
 function render() {
   document.getElementById('bomb-counter').innerText = bombCount.toString().padStart(3, '0');
-  var seconds = timeElapsed % 60;
   var tdList = Array.from(document.querySelectorAll('[data-row]'));
+
   tdList.forEach(function(td) {
-    var rowIdx = parseInt(td.getAttribute('data-row'));
-    var colIdx = parseInt(td.getAttribute('data-col'));
-    var cell = board[rowIdx][colIdx];
-    if (cell.flagged) {
-      td.innerHTML = flagImage;
-    } else if (cell.revealed) {
-      if (cell.bomb) {
-        td.innerHTML = bombImage;
-      } else if (cell.adjBombs) {
-        td.className = 'revealed'
-        td.style.color = colors[cell.adjBombs];
-        td.textContent = cell.adjBombs;
+      var rowIdx = parseInt(td.getAttribute('data-row'));
+      var colIdx = parseInt(td.getAttribute('data-col'));
+      var cell = board[rowIdx][colIdx];
+
+      if (cell.flagged) {
+          td.innerHTML = flagImage;
+      } else if (cell.revealed) {
+          if (cell.bomb) {
+              td.innerHTML = bombImage;
+          } else if (cell.adjBombs) {
+              td.className = 'revealed';
+              td.style.color = colors[cell.adjBombs];
+              td.textContent = cell.adjBombs;
+          } else {
+              td.className = 'revealed';
+          }
       } else {
-        td.className = 'revealed'
+          td.innerHTML = '';
       }
-    } else {
-      td.innerHTML = '';
-    }
   });
 
-  //===========================kondisi win dan hit bomb===========================//
-
   if (hitBomb) {
-    document.getElementById('reset').innerHTML = '<img src=images/dead-face.png>';
-    runCodeForAllCells(function(cell) {
-      if (!cell.bomb && cell.flagged) {
-        var td = document.querySelector(`[data-row="${cell.row}"][data-col="${cell.col}"]`);
-        td.innerHTML = wrongBombImage;
-      }
-    });
+      document.getElementById('reset').innerHTML = '<img src="images/dead-face.png">';
+      runCodeForAllCells(function(cell) {
+          if (!cell.bomb && cell.flagged) {
+              var td = document.querySelector(`[data-row="${cell.row}"][data-col="${cell.col}"]`);
+              td.innerHTML = wrongBombImage;
+          }
+      });
   } else if (winner) {
-    document.getElementById('reset').innerHTML = '<img src=images/cool-face.png>';
-    clearInterval(timerId);
-    
-    localStorage.setItem('toptime',elapsedTime);//<-------
-    //ini buat nyimpen waktu terendah yang didapatkan dari kondisi menang
+      document.getElementById('reset').innerHTML = '<img src="images/cool-face.png">';
+      clearInterval(timerId);
+
+      // Simpan dan bandingkan waktu terbaik
+      if (elapsedTime < highScore) {
+          highScore = elapsedTime;
+          localStorage.setItem('highscore', highScore);
+      }
   }
-};
+
+  // Tampilkan waktu terbaik di layar
+  document.getElementById('high-score').innerText = 
+      `Best Time: ${highScore === Infinity ? '---' : highScore.toString().padStart(3, '0')}`;
+}
+
 
 function runCodeForAllCells(cb) {
   board.forEach(function(rowArr) {

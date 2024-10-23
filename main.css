@@ -198,3 +198,55 @@ td {
     background: linear-gradient(to right, rgba(33,41,89,1) 0%,rgba(33,41,89,1) 11%,rgba(80,114,161,1) 56%,rgba(117,172,219,0.7) 92%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#212959', endColorstr='#007db9e8',GradientType=1 ); /* IE6-9 */
 }
+
+#high-score {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    color: #fff;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    text-align: center;
+    width: fit-content;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, background-color 0.3s;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#high-score {
+    font-family: 'Press Start 2P', cursive;  /* Font bergaya retro */
+    font-size: 18px;
+    color: #00ffcc;
+    background-color: #1a1a1a;
+    border: 3px solid #00ffcc;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px auto;
+    width: fit-content;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: 0 0 15px #00ffcc, 0 0 30px rgba(0, 255, 204, 0.7);
+    animation: flicker 2s infinite;
+}
+
+/* Animasi untuk efek berkedip ala retro */
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.85;
+    }
+    80% {
+        opacity: 0.5;
+    }
+}
+
+#high-score:hover {
+    background-color: #333;
+    box-shadow: 0 0 20px #ff00cc, 0 0 35px rgba(255, 0, 204, 0.8);
+    color: #ff00cc;
+    border-color: #ff00cc;
+}

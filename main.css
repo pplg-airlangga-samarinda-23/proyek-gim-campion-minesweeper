@@ -213,24 +213,40 @@ td {
     transition: transform 0.3s ease-in-out, background-color 0.3s;
 }
 
-#high-score:hover {
-    transform: scale(1.05);
-    background: linear-gradient(45deg, #2575fc, #6a11cb);
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#high-score {
+    font-family: 'Press Start 2P', cursive;  /* Font bergaya retro */
+    font-size: 18px;
+    color: #00ffcc;
+    background-color: #1a1a1a;
+    border: 3px solid #00ffcc;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px auto;
+    width: fit-content;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: 0 0 15px #00ffcc, 0 0 30px rgba(0, 255, 204, 0.7);
+    animation: flicker 2s infinite;
 }
 
-/* Tambahan animasi glow */
-@keyframes glow {
-    0% {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+/* Animasi untuk efek berkedip ala retro */
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
     }
     50% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        opacity: 0.85;
     }
-    100% {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    80% {
+        opacity: 0.5;
     }
 }
 
-#high-score:active {
-    animation: glow 1s infinite;
+#high-score:hover {
+    background-color: #333;
+    box-shadow: 0 0 20px #ff00cc, 0 0 35px rgba(255, 0, 204, 0.8);
+    color: #ff00cc;
+    border-color: #ff00cc;
 }
